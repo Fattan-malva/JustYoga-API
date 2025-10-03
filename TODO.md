@@ -1,3 +1,4 @@
-- [x] Add formatDateToYYYYMMDD helper function in src/Models/M.Schedule.js
-- [x] Update loadSchedule to format startDate and endDate to YYYYMMDD strings
-- [x] Use formatted strings in SQL query inputs
+- [x] Add new model function `findScheduleByDateAndStudio` in `src/Models/M.TrxSchedule.js`
+- [x] Add new controller function `getScheduleByDateAndStudio` in `src/Controllers/C.TrxSchedule.js`
+- [x] Add new route `/by-date-studio` in `src/Routes/R.TrxSchedule.js`
+- [ ] Test the new API endpoint

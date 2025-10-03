@@ -1,4 +1,4 @@
-const Schedule = require('../Models/M.schedule');
+const Schedule = require('../Models/M.TrxSchedule');
 
 async function getSchedule(req, res) {
   try {
@@ -42,4 +42,25 @@ async function getScheduleByDate(req, res) {
   }
 }
 
-module.exports = { getSchedule, getScheduleByDate };
+async function getScheduleByDateAndStudio(req, res) {
+  try {
+    const { date, studioID } = req.query;
+
+    if (!date || !studioID) {
+      return res.status(400).json({ message: "date and studioID are required" });
+    }
+
+    const data = await Schedule.findScheduleByDateAndStudio(date, parseInt(studioID));
+
+    if (data.length === 0) {
+      return res.status(404).json({ message: "No schedule found for this date and studio" });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching schedule by date and studio:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+module.exports = { getSchedule, getScheduleByDate, getScheduleByDateAndStudio };

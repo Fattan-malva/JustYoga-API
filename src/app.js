@@ -7,7 +7,8 @@ const rateLimit = require('express-rate-limit');
 const productRoutes = require('./Routes/R.product');
 const authRoutes = require('./Routes/R.auth');
 const classRoutes = require('./Routes/R.class');
-const scheduleRoutes = require('./Routes/R.schedule');
+const scheduleRoutes = require('./Routes/R.TrxSchedule');
+const studioRoutes = require('./Routes/R.MstStudio');
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.use(express.json());
 // Rate Limiter (batas request agar anti-DDOS/bruteforce)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 menit
-  max: 100, // max 100 request per IP
+  max: 1000, // max 100 request per IP
   message: { message: 'Too many requests, please try again later.' }
 });
 app.use(limiter);
@@ -29,6 +30,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/schedules', scheduleRoutes);
+app.use('/api/studios', studioRoutes);
 // Health check
 app.get('/health', (req, res) => res.json({ ok: true }));
 
