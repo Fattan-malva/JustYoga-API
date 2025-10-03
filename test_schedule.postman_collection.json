@@ -1,0 +1,81 @@
+{
+  "info": {
+    "name": "API Gym Schedule Test",
+    "description": "Collection for testing the schedule API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Load Schedule",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"studioId\": \"STD001\",\n  \"roomType\": \"RT001\",\n  \"selectedDate\": \"20241201\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/schedule/load",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "schedule",
+            "load"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Studios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/schedule/studios",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "schedule",
+            "studios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Room Types",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/schedule/room-types",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "schedule",
+            "room-types"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

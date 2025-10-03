@@ -1,0 +1,3 @@
+- [x] Add formatDateToYYYYMMDD helper function in src/Models/M.Schedule.js
+- [x] Update loadSchedule to format startDate and endDate to YYYYMMDD strings
+- [x] Use formatted strings in SQL query inputs
