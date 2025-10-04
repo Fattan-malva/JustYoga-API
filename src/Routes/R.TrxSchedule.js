@@ -6,7 +6,6 @@ const ScheduleController = require('../Controllers/C.TrxSchedule');
 router.get('/', ScheduleController.getSchedule);
 // GET schedule berdasarkan date saja
 router.get('/by-date', ScheduleController.getScheduleByDate);
-
 // GET schedule berdasarkan date dan studio saja
 router.get('/by-date-studio', ScheduleController.getScheduleByDateAndStudio);
 

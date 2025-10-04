@@ -4,11 +4,11 @@ const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 
-const productRoutes = require('./Routes/R.product');
 const authRoutes = require('./Routes/R.auth');
 const classRoutes = require('./Routes/R.class');
 const scheduleRoutes = require('./Routes/R.TrxSchedule');
 const studioRoutes = require('./Routes/R.MstStudio');
+const roomTypeRoutes = require('./Routes/R.MstRoomType');
 
 const app = express();
 
@@ -26,11 +26,11 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Routes
-app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/schedules', scheduleRoutes);
 app.use('/api/studios', studioRoutes);
+app.use('/api/room-types', roomTypeRoutes);
 // Health check
 app.get('/health', (req, res) => res.json({ ok: true }));
 

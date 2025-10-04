@@ -1,4 +1,4 @@
-const ClassModel = require('../Models/M.MstStudio');
+const ClassModel = require('../Models/M.MstRoomType');
 
 async function index(req, res) {
     const classes = await ClassModel.findAll();

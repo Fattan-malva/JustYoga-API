@@ -7,14 +7,16 @@ async function findScheduleByParams(date, roomType, studioID) {
     .input('roomType', sql.Int, roomType)
     .input('studioID', sql.Int, studioID)
     .query(`
-      SELECT 
-          j.TimeCls,                     
-          s.Name AS StudioName,          
-          c.ClassName,                   
-          e1.EmployeeName AS Teacher1,   
-          e2.EmployeeName AS Teacher2    
+      SELECT
+          j.TimeCls,
+          s.Name AS StudioName,
+          r.RoomName,
+          c.ClassName,
+          e1.EmployeeName AS Teacher1,
+          e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
+      JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT 
               CASE 
@@ -73,11 +75,13 @@ async function findScheduleByDate(date) {
       SELECT 
           j.TimeCls,                     
           s.Name AS StudioName,          
-          c.ClassName,                   
+          c.ClassName,
+          r.RoomName,                   
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2    
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
+      JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT 
               CASE 
@@ -135,11 +139,13 @@ async function findScheduleByDateAndStudio(date, studioID) {
       SELECT 
           j.TimeCls,                     
           s.Name AS StudioName,          
-          c.ClassName,                   
+          c.ClassName, 
+          r.RoomName,                    
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2    
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
+      JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT 
               CASE 
