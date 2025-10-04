@@ -63,4 +63,25 @@ async function getScheduleByDateAndStudio(req, res) {
   }
 }
 
-module.exports = { getSchedule, getScheduleByDate, getScheduleByDateAndStudio };
+async function getScheduleByDateAndRoomType(req, res) {
+  try {
+    const { date, roomType } = req.query;
+
+    if (!date || !roomType) {
+      return res.status(400).json({ message: "date and roomType are required" });
+    }
+
+    const data = await Schedule.findScheduleByDateAndRoomType(date, parseInt(roomType));
+
+    if (data.length === 0) {
+      return res.status(404).json({ message: "No schedule found for this date and room type" });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching schedule by date and room type:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+module.exports = { getSchedule, getScheduleByDate, getScheduleByDateAndStudio, getScheduleByDateAndRoomType };

@@ -8,5 +8,7 @@ router.get('/', ScheduleController.getSchedule);
 router.get('/by-date', ScheduleController.getScheduleByDate);
 // GET schedule berdasarkan date dan studio saja
 router.get('/by-date-studio', ScheduleController.getScheduleByDateAndStudio);
+// GET schedule berdasarkan date dan room type saja
+router.get('/by-date-roomtype', ScheduleController.getScheduleByDateAndRoomType);
 
 module.exports = router;
