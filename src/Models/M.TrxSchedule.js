@@ -9,6 +9,7 @@ async function findScheduleByParams(date, roomType, studioID) {
     .query(`
       SELECT
           j.TimeCls,
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,
           s.Name AS StudioName,
           r.RoomName,
           c.ClassName,
@@ -74,7 +75,8 @@ async function findScheduleByDate(date) {
     .input('date', sql.Date, date)
     .query(`
       SELECT 
-          j.TimeCls,                     
+          j.TimeCls,
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,                    
           s.Name AS StudioName,          
           c.ClassName,
           c.TotalMap,
@@ -139,7 +141,8 @@ async function findScheduleByDateAndStudio(date, studioID) {
     .input('studioID', sql.Int, studioID)
     .query(`
       SELECT 
-          j.TimeCls,                     
+          j.TimeCls,
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,                     
           s.Name AS StudioName,          
           c.ClassName,
           c.TotalMap, 
@@ -205,7 +208,8 @@ async function findScheduleByDateAndRoomType(date, roomType) {
     .input('roomType', sql.Int, roomType)
     .query(`
       SELECT 
-          j.TimeCls,                     
+          j.TimeCls,
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,                     
           s.Name AS StudioName,          
           c.ClassName,
           c.TotalMap, 
