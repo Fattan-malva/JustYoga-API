@@ -4,13 +4,14 @@ WHERE TABLE_NAME IN ('TrxClassSchedule','MstTimeSchedule','MstClass','MstEmploye
 
 
 DECLARE @date DATE = '2025-10-02';
-DECLARE @roomType INT = 1;
+DECLARE @roomType INT = 2;
 DECLARE @studioID INT = 3;
 
 SELECT 
     j.TimeCls,                     -- pakai TimeCls seperti awal
     s.Name AS StudioName,          -- nama studio dari MstStudio
-    c.ClassName,                   -- nama kelas dari MstClass
+    c.ClassName,				   -- nama kelas dari MstClass
+	c.TotalMap,					   -- Total Map
     e1.EmployeeName AS Teacher1,   -- nama guru 1
     e2.EmployeeName AS Teacher2    -- nama guru 2
 FROM TrxClassSchedule j
