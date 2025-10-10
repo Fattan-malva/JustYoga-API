@@ -15,7 +15,8 @@ async function findScheduleByParams(date, roomType, studioID) {
           cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
           j.TimeCls,                     
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
-          s.Name AS StudioName,         
+          s.Name AS StudioName,
+          r.RoomName,         
           c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2
@@ -85,7 +86,8 @@ async function findScheduleByDate(date) {
           cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
           j.TimeCls,                     
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
-          s.Name AS StudioName,         
+          s.Name AS StudioName,
+          r.RoomName,         
           c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2    
@@ -154,7 +156,8 @@ async function findScheduleByDateAndStudio(date, studioID) {
           cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
           j.TimeCls,                     
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
-          s.Name AS StudioName,         
+          s.Name AS StudioName,
+          r.RoomName,         
           c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2
@@ -224,7 +227,8 @@ async function findScheduleByDateAndRoomType(date, roomType) {
           cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
           j.TimeCls,                     
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
-          s.Name AS StudioName,         
+          s.Name AS StudioName,
+          r.RoomName,         
           c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2 
