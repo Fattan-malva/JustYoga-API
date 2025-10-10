@@ -17,7 +17,8 @@ cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + ca
 	(select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
 	s.studioID,                    -- StudioID 
 	s.Name AS StudioName,          -- nama studio dari MstStudio
-	j.RoomType ,
+    r.RoomName,                    -- RoomName
+	j.RoomType ,                   -- RoomType ID
 	c.ClassID,                     -- classid
     c.ClassName,				   -- nama kelas dari MstClass
 	c.TotalMap,					   -- Total Map
