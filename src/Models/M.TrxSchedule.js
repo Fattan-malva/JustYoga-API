@@ -8,13 +8,16 @@ async function findScheduleByParams(date, roomType, studioID) {
     .input('studioID', sql.Int, studioID)
     .query(`
       SELECT
-          j.TimeCls,
-          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,
-          s.Name AS StudioName,
-          r.RoomName,
-          c.ClassName,
-          c.TotalMap,
-          e1.EmployeeName AS Teacher1,
+          s.studioID,                    
+          j.RoomType ,
+          c.ClassID,                  
+          c.TotalMap,					  
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,                     
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
+          s.Name AS StudioName,         
+          c.ClassName,				 
+          e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
@@ -75,12 +78,15 @@ async function findScheduleByDate(date) {
     .input('date', sql.Date, date)
     .query(`
       SELECT 
-          j.TimeCls,
-          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,                    
-          s.Name AS StudioName,          
-          c.ClassName,
-          c.TotalMap,
-          r.RoomName,                   
+          s.studioID,                    
+          j.RoomType ,
+          c.ClassID,                  
+          c.TotalMap,					  
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,                     
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
+          s.Name AS StudioName,         
+          c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
           e2.EmployeeName AS Teacher2    
       FROM TrxClassSchedule j
@@ -141,14 +147,17 @@ async function findScheduleByDateAndStudio(date, studioID) {
     .input('studioID', sql.Int, studioID)
     .query(`
       SELECT 
-          j.TimeCls,
-          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,                     
-          s.Name AS StudioName,          
-          c.ClassName,
-          c.TotalMap, 
-          r.RoomName,                    
+          s.studioID,                    
+          j.RoomType ,
+          c.ClassID,                  
+          c.TotalMap,					  
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,                     
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
+          s.Name AS StudioName,         
+          c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
-          e2.EmployeeName AS Teacher2    
+          e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
       JOIN MstRoomType r ON j.RoomType = r.RoomType
@@ -208,14 +217,17 @@ async function findScheduleByDateAndRoomType(date, roomType) {
     .input('roomType', sql.Int, roomType)
     .query(`
       SELECT 
-          j.TimeCls,
-          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,                     
-          s.Name AS StudioName,          
-          c.ClassName,
-          c.TotalMap, 
-          r.RoomName,                    
+          s.studioID,                    
+          j.RoomType ,
+          c.ClassID,                  
+          c.TotalMap,					  
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,                     
+          (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
+          s.Name AS StudioName,         
+          c.ClassName,				 
           e1.EmployeeName AS Teacher1,   
-          e2.EmployeeName AS Teacher2    
+          e2.EmployeeName AS Teacher2 
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
       JOIN MstRoomType r ON j.RoomType = r.RoomType
