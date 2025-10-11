@@ -9,6 +9,7 @@ const classRoutes = require('./Routes/R.class');
 const scheduleRoutes = require('./Routes/R.TrxSchedule');
 const studioRoutes = require('./Routes/R.MstStudio');
 const roomTypeRoutes = require('./Routes/R.MstRoomType');
+const bookingRoutes = require('./Routes/R.TrxClassBooking');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api/classes', classRoutes);
 app.use('/api/schedules', scheduleRoutes);
 app.use('/api/studios', studioRoutes);
 app.use('/api/room-types', roomTypeRoutes);
+app.use('/api/bookings', bookingRoutes);
 // Health check
 app.get('/health', (req, res) => res.json({ ok: true }));
 
