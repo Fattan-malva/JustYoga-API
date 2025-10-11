@@ -1,8 +1,8 @@
-const ClassModel = require('../Models/M.MstStudio');
+const StudioModel = require('../Models/M.MstStudio');
 
 async function index(req, res) {
-    const classes = await ClassModel.findAll();
-    res.json(classes);
+    const studios = await StudioModel.findAll();
+    res.json(studios);
 }
 
 module.exports = { index };
