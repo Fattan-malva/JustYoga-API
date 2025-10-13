@@ -8,24 +8,24 @@ async function findScheduleByParams(date, roomType, studioID) {
     .input('studioID', sql.Int, studioID)
     .query(`
       SELECT
-          s.studioID,                    
+          s.studioID,
           j.RoomType ,
-          c.ClassID,                  
-          c.TotalMap,					  
-          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
-          j.TimeCls,                     
+          c.ClassID,
+          c.TotalMap,
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(10),@date,23) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
           s.Name AS StudioName,
-          r.RoomName,         
-          c.ClassName,				 
-          e1.EmployeeName AS Teacher1,   
+          r.RoomName,
+          c.ClassName,
+          e1.EmployeeName AS Teacher1,
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
       JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
-          SELECT 
-              CASE 
+          SELECT
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonCls
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueCls
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedCls
@@ -34,7 +34,7 @@ async function findScheduleByParams(date, roomType, studioID) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatCls
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunCls
               END AS ClassID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch1
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch1
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch1
@@ -43,7 +43,7 @@ async function findScheduleByParams(date, roomType, studioID) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatTch1
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunTch1
               END AS Teacher1ID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch2
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch2
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch2
@@ -78,25 +78,25 @@ async function findScheduleByDate(date) {
   const result = await pool.request()
     .input('date', sql.Date, date)
     .query(`
-      SELECT 
-          s.studioID,                    
+      SELECT
+          s.studioID,
           j.RoomType ,
-          c.ClassID,                  
-          c.TotalMap,					  
-          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
-          j.TimeCls,                     
+          c.ClassID,
+          c.TotalMap,
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(10),@date,23) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
           s.Name AS StudioName,
-          r.RoomName,         
-          c.ClassName,				 
-          e1.EmployeeName AS Teacher1,   
-          e2.EmployeeName AS Teacher2    
+          r.RoomName,
+          c.ClassName,
+          e1.EmployeeName AS Teacher1,
+          e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
       JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
-          SELECT 
-              CASE 
+          SELECT
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonCls
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueCls
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedCls
@@ -105,7 +105,7 @@ async function findScheduleByDate(date) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatCls
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunCls
               END AS ClassID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch1
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch1
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch1
@@ -114,7 +114,7 @@ async function findScheduleByDate(date) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatTch1
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunTch1
               END AS Teacher1ID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch2
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch2
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch2
@@ -148,25 +148,25 @@ async function findScheduleByDateAndStudio(date, studioID) {
     .input('date', sql.Date, date)
     .input('studioID', sql.Int, studioID)
     .query(`
-      SELECT 
-          s.studioID,                    
+      SELECT
+          s.studioID,
           j.RoomType ,
-          c.ClassID,                  
-          c.TotalMap,					  
-          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
-          j.TimeCls,                     
+          c.ClassID,
+          c.TotalMap,
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(10),@date,23) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
           s.Name AS StudioName,
-          r.RoomName,         
-          c.ClassName,				 
-          e1.EmployeeName AS Teacher1,   
+          r.RoomName,
+          c.ClassName,
+          e1.EmployeeName AS Teacher1,
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
       JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
-          SELECT 
-              CASE 
+          SELECT
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonCls
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueCls
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedCls
@@ -175,7 +175,7 @@ async function findScheduleByDateAndStudio(date, studioID) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatCls
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunCls
               END AS ClassID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch1
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch1
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch1
@@ -184,7 +184,7 @@ async function findScheduleByDateAndStudio(date, studioID) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatTch1
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunTch1
               END AS Teacher1ID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch2
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch2
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch2
@@ -219,25 +219,25 @@ async function findScheduleByDateAndRoomType(date, roomType) {
     .input('date', sql.Date, date)
     .input('roomType', sql.Int, roomType)
     .query(`
-      SELECT 
-          s.studioID,                    
+      SELECT
+          s.studioID,
           j.RoomType ,
-          c.ClassID,                  
-          c.TotalMap,					  
-          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(12),@date,106) + '|' + j.TimeCls as UniqCode,
-          j.TimeCls,                     
+          c.ClassID,
+          c.TotalMap,
+          cast(s.studioid as varchar(5)) + '|' + cast(j.roomtype as varchar(5)) + '|' + cast(c.classid as varchar(5)) + '|' + convert(varchar(10),@date,23) + '|' + j.TimeCls as UniqCode,
+          j.TimeCls,
           (select ETime  from MstTimeSchedule where studioID =j.StudioID and SDate =j.SDate and edate=j.EDate and stime=j.TimeCls  ) as TimeClsEnd,      --TimeCls Berakhir
           s.Name AS StudioName,
-          r.RoomName,         
-          c.ClassName,				 
-          e1.EmployeeName AS Teacher1,   
-          e2.EmployeeName AS Teacher2 
+          r.RoomName,
+          c.ClassName,
+          e1.EmployeeName AS Teacher1,
+          e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
       JOIN MstStudio s ON j.StudioID = s.StudioID
       JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
-          SELECT 
-              CASE 
+          SELECT
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonCls
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueCls
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedCls
@@ -246,7 +246,7 @@ async function findScheduleByDateAndRoomType(date, roomType) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatCls
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunCls
               END AS ClassID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch1
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch1
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch1
@@ -255,7 +255,7 @@ async function findScheduleByDateAndRoomType(date, roomType) {
                   WHEN CAST(j.Date6 AS DATE) = @date THEN j.SatTch1
                   WHEN CAST(j.Date7 AS DATE) = @date THEN j.SunTch1
               END AS Teacher1ID,
-              CASE 
+              CASE
                   WHEN CAST(j.Date1 AS DATE) = @date THEN j.MonTch2
                   WHEN CAST(j.Date2 AS DATE) = @date THEN j.TueTch2
                   WHEN CAST(j.Date3 AS DATE) = @date THEN j.WedTch2
