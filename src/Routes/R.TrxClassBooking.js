@@ -4,5 +4,6 @@ const BookingController = require('../Controllers/C.TrxClassBooking');
 
 router.get('/', BookingController.index);
 router.get('/find-by-uniq-code', BookingController.findByUniqCode);
+router.post('/', BookingController.create);
 
 module.exports = router;

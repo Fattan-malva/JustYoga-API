@@ -26,4 +26,29 @@ async function findByUniqCode(req, res) {
     }
 }
 
-module.exports = { index, findByUniqCode };
+async function create(req, res) {
+    try {
+        const bookingData = req.body;
+
+        // Validate required fields
+        const requiredFields = [
+            'studioID', 'RoomType', 'ClassID', 'ClassBookingDate', 'ClassBookingTime',
+            'customerID', 'ContractID', 'AccessCardNumber', 'isActive', 'isRelease',
+            'isConfirm', 'ClassMapNumber', 'createby', 'createdate'
+        ];
+
+        for (const field of requiredFields) {
+            if (bookingData[field] === undefined || bookingData[field] === null) {
+                return res.status(400).json({ message: `${field} is required` });
+            }
+        }
+
+        const result = await BookingModel.create(bookingData);
+        res.status(201).json({ message: 'Booking created successfully' });
+    } catch (error) {
+        console.error("Error creating booking:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+module.exports = { index, findByUniqCode, create };

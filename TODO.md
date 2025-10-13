@@ -1,4 +1,4 @@
-- [ ] Add findByUniqCode function in M.TrxClassBooking.js
-- [ ] Add findByUniqCode function in C.TrxClassBooking.js
-- [ ] Add route for find-by-uniq-code in R.TrxClassBooking.js
-- [ ] Test the new API endpoint
+- [x] Add create function in M.TrxClassBooking.js
+- [x] Add create controller in C.TrxClassBooking.js
+- [x] Add POST route in R.TrxClassBooking.js
+- [x] Test the new POST endpoint to ensure it inserts data correctly
