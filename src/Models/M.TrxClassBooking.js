@@ -36,7 +36,7 @@ async function findByUniqCode(uniqCode) {
     .input('date', sql.VarChar, dateStr)
     .input('time', sql.VarChar, timeStr)
     .query(`
-      SELECT TOP 1 *
+      SELECT *
       FROM TrxClassBooking
       WHERE studioID = @studioID
         AND RoomType = @roomType
