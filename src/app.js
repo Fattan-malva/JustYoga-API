@@ -11,6 +11,7 @@ const studioRoutes = require('./Routes/R.MstStudio');
 const roomTypeRoutes = require('./Routes/R.MstRoomType');
 const bookingRoutes = require('./Routes/R.TrxClassBooking');
 const JustMeRoutes = require('./Routes/R.TrxTchJM_Available');
+const ActivationRoutes = require('./Routes/R.Activation');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api/studios', studioRoutes);
 app.use('/api/room-types', roomTypeRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/justme', JustMeRoutes);
+app.use('/api/activation', ActivationRoutes);
 
 // Health check
 app.get('/health', (req, res) => res.json({ ok: true }));
