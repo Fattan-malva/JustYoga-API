@@ -31,4 +31,25 @@ async function getByDate(req, res) {
   }
 }
 
-module.exports = { getAll, getByDate };
+async function getByDateAndStudio(req, res) {
+  try {
+    const { date, studioID } = req.query;
+
+    if (!date || !studioID) {
+      return res.status(400).json({ message: "date and studioID are required" });
+    }
+
+    const justme = await JustMeModel.findByDateAndStudio(date, parseInt(studioID));
+
+    if (justme.length === 0) {
+      return res.status(404).json({ message: "No data found for this date and studio" });
+    }
+
+    res.json(justme);
+  } catch (error) {
+    console.error("Error fetching justme by date and studio:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+module.exports = { getAll, getByDate, getByDateAndStudio };

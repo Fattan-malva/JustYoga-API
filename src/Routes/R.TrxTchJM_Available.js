@@ -6,5 +6,7 @@ const JustMeController = require('../Controllers/C.TrxTchJM_Available');
 router.get('/', JustMeController.getAll);
 // GET justme by date
 router.get('/by-date', JustMeController.getByDate);
+// GET justme by date and studio
+router.get('/by-date-studio', JustMeController.getByDateAndStudio);
 
 module.exports = router;
