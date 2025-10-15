@@ -21,8 +21,8 @@ async function findScheduleByParams(date, roomType, studioID) {
           e1.EmployeeName AS Teacher1,
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
-      JOIN MstStudio s ON j.StudioID = s.StudioID
-      JOIN MstRoomType r ON j.RoomType = r.RoomType
+      INNER JOIN MstStudio s ON j.StudioID = s.StudioID
+      INNER JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT
               CASE
@@ -92,8 +92,8 @@ async function findScheduleByDate(date) {
           e1.EmployeeName AS Teacher1,
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
-      JOIN MstStudio s ON j.StudioID = s.StudioID
-      JOIN MstRoomType r ON j.RoomType = r.RoomType
+      INNER JOIN MstStudio s ON j.StudioID = s.StudioID
+      INNER JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT
               CASE
@@ -162,8 +162,8 @@ async function findScheduleByDateAndStudio(date, studioID) {
           e1.EmployeeName AS Teacher1,
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
-      JOIN MstStudio s ON j.StudioID = s.StudioID
-      JOIN MstRoomType r ON j.RoomType = r.RoomType
+      INNER JOIN MstStudio s ON j.StudioID = s.StudioID
+      INNER JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT
               CASE
@@ -233,8 +233,8 @@ async function findScheduleByDateAndRoomType(date, roomType) {
           e1.EmployeeName AS Teacher1,
           e2.EmployeeName AS Teacher2
       FROM TrxClassSchedule j
-      JOIN MstStudio s ON j.StudioID = s.StudioID
-      JOIN MstRoomType r ON j.RoomType = r.RoomType
+      INNER JOIN MstStudio s ON j.StudioID = s.StudioID
+      INNER JOIN MstRoomType r ON j.RoomType = r.RoomType
       OUTER APPLY (
           SELECT
               CASE
