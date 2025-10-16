@@ -1,5 +1,6 @@
-# TODO: Add Activation Filtering by Email, Phone, NoIdentity, BirthDate
+# TODO: Create GET API for Customer by customerID
 
-- [x] Update M.Activation.js: Modify findAll() to accept optional params (email, phone, noIdentity, birthDate) and build dynamic WHERE clause for filtering.
-- [x] Update C.Activation.js: Modify index() to extract query params from req.query and pass to findAll().
-- [ ] Test the GET /api/activation endpoint with various query params to ensure filtering works correctly.
+- [x] Update src/Models/M.CustomerLogin.js with findById function to query MstCustomerLogin by customerID
+- [x] Create src/Controllers/C.CustomerLogin.js with show function to handle GET requests
+- [x] Create src/Routes/R.CustomerLogin.js with GET /:customerID route
+- [x] Update src/app.js to register the new route under /api/customers

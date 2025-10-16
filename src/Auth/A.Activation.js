@@ -17,7 +17,7 @@ async function ActivationCheck(req, res) {
       .input('noIdentity', noIdentity)
       .input('birthDate', birthDate)
       .query(`
-        SELECT customerID, name, birthDate, phone, noIdentity, email, lastContractID
+        SELECT customerID, name, birthDate, phone, noIdentity, email, lastContractID, toStudioID
         FROM MstCustomer
         WHERE email = @email
           AND phone = @phone
@@ -56,26 +56,31 @@ async function ActivationCreate(req, res) {
       return res.status(400).json({ message: 'Account already activated' });
     }
 
-    // Ambil nama dari MstCustomer
+    // Ambil data tambahan dari MstCustomer
     const customerResult = await pool.request()
       .input('customerID', customerID)
-      .query('SELECT name FROM MstCustomer WHERE customerID = @customerID');
+      .query('SELECT name, toStudioID, lastContractID, noIdentity, birthDate, phone FROM MstCustomer WHERE customerID = @customerID');
 
     if (customerResult.recordset.length === 0) {
       return res.status(404).json({ message: 'Member not found' });
     }
 
-    const { name } = customerResult.recordset[0];
+    const { name, toStudioID, lastContractID, noIdentity, birthDate, phone } = customerResult.recordset[0];
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await pool.request()
       .input('customerID', customerID)
       .input('name', name)
+      .input('toStudioID', toStudioID)
+      .input('lastContractID', lastContractID)
+      .input('noIdentity', noIdentity)
+      .input('birthDate', birthDate)
+      .input('phone', phone)
       .input('email', email)
       .input('password', hashedPassword)
       .query(`
-        INSERT INTO MstCustomerLogin (customerID, name, email, password)
-        VALUES (@customerID, @name, @email, @password)
+        INSERT INTO MstCustomerLogin (customerID, name, toStudioID, lastContractID, noIdentity, birthDate, phone, email, password)
+        VALUES (@customerID, @name, @toStudioID, @lastContractID, @noIdentity, @birthDate, @phone, @email, @password)
       `);
 
     res.status(201).json({ message: 'Account activated successfully' });
