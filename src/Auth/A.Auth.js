@@ -1,8 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getPool } = require('../Config/db'); // koneksi SQL Server
+const sql = require('mssql');
+const { getPool } = require('../Config/db');
 
-// Register User
+// ================= REGISTER =================
 async function register(req, res) {
   const { name, email, password } = req.body;
 
@@ -15,7 +16,7 @@ async function register(req, res) {
 
     // Cek apakah email sudah terdaftar
     const existingUser = await pool.request()
-      .input('email', email)
+      .input('email', sql.VarChar(100), email)
       .query('SELECT * FROM MstCustomerLogin WHERE email = @email');
 
     if (existingUser.recordset.length > 0) {
@@ -25,15 +26,15 @@ async function register(req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Generate manual customerID (misal timestamp atau random)
-    const customerID = Date.now().toString(); // contoh sederhana
+    // Generate customerID manual
+    const customerID = Date.now().toString();
 
     // Simpan user baru
     await pool.request()
-      .input('customerID', customerID)
-      .input('name', name)
-      .input('email', email)
-      .input('password', hashedPassword)
+      .input('customerID', sql.VarChar(50), customerID)
+      .input('name', sql.VarChar(100), name)
+      .input('email', sql.VarChar(100), email)
+      .input('password', sql.VarChar(255), hashedPassword)
       .query(`
         INSERT INTO MstCustomerLogin (customerID, name, email, password)
         VALUES (@customerID, @name, @email, @password)
@@ -47,7 +48,7 @@ async function register(req, res) {
   }
 }
 
-// Login User (by email)
+// ================= LOGIN =================
 async function login(req, res) {
   const { email, password } = req.body;
 
@@ -58,7 +59,7 @@ async function login(req, res) {
   try {
     const pool = await getPool();
     const result = await pool.request()
-      .input('email', email)
+      .input('email', sql.VarChar(100), email)
       .query('SELECT * FROM MstCustomerLogin WHERE email = @email');
 
     const user = result.recordset[0];
@@ -71,11 +72,11 @@ async function login(req, res) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Generate JWT token
+    // Generate JWT dengan masa berlaku panjang (misal 7 hari)
     const token = jwt.sign(
       { id: user.customerID, email: user.email, name: user.name },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '7d' }
     );
 
     res.json({
@@ -94,4 +95,10 @@ async function login(req, res) {
   }
 }
 
-module.exports = { register, login };
+// ================= LOGOUT =================
+// Logout cukup dihapus dari sisi client (Flutter)
+async function logout(req, res) {
+  res.json({ message: 'Logout successful — just delete token on client side' });
+}
+
+module.exports = { register, login, logout };

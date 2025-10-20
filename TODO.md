@@ -1,6 +1,5 @@
-# TODO: Create GET API for Customer by customerID
-
-- [x] Update src/Models/M.CustomerLogin.js with findById function to query MstCustomerLogin by customerID
-- [x] Create src/Controllers/C.CustomerLogin.js with show function to handle GET requests
-- [x] Create src/Routes/R.CustomerLogin.js with GET /:customerID route
-- [x] Update src/app.js to register the new route under /api/customers
+- [ ] Update M.CustomerLogin.js to add updateBearerToken function
+- [ ] Modify login function in A.Auth.js to update BearerToken in database after generating token
+- [ ] Add logout function in A.Auth.js to set BearerToken to NULL
+- [ ] Update R.auth.js to add logout route with authentication middleware
+- [ ] Import authenticateToken in R.auth.js
