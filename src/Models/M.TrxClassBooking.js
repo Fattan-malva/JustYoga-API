@@ -50,6 +50,25 @@ async function findByUniqCode(uniqCode) {
 
 async function create(bookingData) {
   const pool = await getPool();
+
+  // 🔍 1. Cek apakah user punya booking yang belum dirilis
+  const checkExisting = await pool.request()
+    .input('customerID', sql.VarChar, bookingData.customerID)
+    .query(`
+      SELECT TOP 1 *
+      FROM TrxClassBooking
+      WHERE customerID = @customerID AND isRelease = 0
+    `);
+
+  // Jika sudah ada booking yang belum diselesaikan
+  if (checkExisting.recordset.length > 0) {
+    return {
+      success: false,
+      message: 'Anda harus menyelesaikan booking sebelumnya sebelum membuat booking baru.'
+    };
+  }
+
+  // ✅ 2. Jika tidak ada booking aktif, buat booking baru
   const result = await pool.request()
     .input('studioID', sql.VarChar, bookingData.studioID)
     .input('RoomType', sql.Int, bookingData.RoomType)
@@ -77,7 +96,41 @@ async function create(bookingData) {
       )
     `);
 
-  return { success: true };
+  return { success: true, message: 'Booking berhasil dibuat.' };
 }
+
+//NO VALIDATED
+
+// async function create(bookingData) {
+//   const pool = await getPool();
+//   const result = await pool.request()
+//     .input('studioID', sql.VarChar, bookingData.studioID)
+//     .input('RoomType', sql.Int, bookingData.RoomType)
+//     .input('ClassID', sql.Int, bookingData.ClassID)
+//     .input('ClassBookingDate', sql.DateTime, new Date(bookingData.ClassBookingDate))
+//     .input('ClassBookingTime', sql.VarChar, bookingData.ClassBookingTime)
+//     .input('customerID', sql.VarChar, bookingData.customerID)
+//     .input('ContractID', sql.VarChar, bookingData.ContractID)
+//     .input('AccessCardNumber', sql.Int, bookingData.AccessCardNumber)
+//     .input('isActive', sql.Bit, bookingData.isActive)
+//     .input('isRelease', sql.Bit, bookingData.isRelease)
+//     .input('isConfirm', sql.Bit, bookingData.isConfirm)
+//     .input('ClassMapNumber', sql.Int, bookingData.ClassMapNumber)
+//     .input('createby', sql.VarChar, bookingData.createby)
+//     .input('createdate', sql.DateTime, new Date(bookingData.createdate))
+//     .query(`
+//       INSERT INTO TrxClassBooking (
+//         studioID, RoomType, ClassID, ClassBookingDate, ClassBookingTime,
+//         customerID, ContractID, AccessCardNumber, isActive, isRelease,
+//         isConfirm, ClassMapNumber, createby, createdate
+//       ) VALUES (
+//         @studioID, @RoomType, @ClassID, @ClassBookingDate, @ClassBookingTime,
+//         @customerID, @ContractID, @AccessCardNumber, @isActive, @isRelease,
+//         @isConfirm, @ClassMapNumber, @createby, @createdate
+//       )
+//     `);
+
+//   return { success: true };
+// }
 
 module.exports = { findAll, findByUniqCode, create };

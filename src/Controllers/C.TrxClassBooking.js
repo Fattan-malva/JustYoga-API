@@ -30,7 +30,7 @@ async function create(req, res) {
     try {
         const bookingData = req.body;
 
-        // Validate required fields
+        // ✅ 1. Validasi field wajib
         const requiredFields = [
             'studioID', 'RoomType', 'ClassID', 'ClassBookingDate', 'ClassBookingTime',
             'customerID', 'ContractID', 'AccessCardNumber', 'isActive', 'isRelease',
@@ -43,12 +43,22 @@ async function create(req, res) {
             }
         }
 
+        // ✅ 2. Panggil model untuk membuat booking
         const result = await BookingModel.create(bookingData);
-        res.status(201).json({ message: 'Booking created successfully' });
+
+        // ✅ 3. Jika gagal karena booking aktif belum dirilis
+        if (!result.success) {
+            return res.status(400).json({ message: result.message });
+        }
+
+        // ✅ 4. Jika berhasil
+        res.status(201).json({ message: result.message || 'Booking created successfully' });
+
     } catch (error) {
         console.error("Error creating booking:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
 
 module.exports = { index, findByUniqCode, create };
