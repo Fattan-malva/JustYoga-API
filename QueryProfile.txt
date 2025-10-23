@@ -1,0 +1,14 @@
+  //Plan History
+  
+  select mp.productName, tc.startDate,tc.endDate from TrxContract tc
+  inner join MstProduct mp on tc.productID = mp.productID
+  where customerID = '20240526075145993' 
+  order by trxDate asc
+
+
+  //JustMe History
+
+  Select mp.productName, tj.startDate,tj.endDate, tj.remainSession from TrxJustMe tj
+   inner join MstProduct mp on tj.productID = mp.productID
+  where customerID = '20240526075145993'
+  order by startDate 
