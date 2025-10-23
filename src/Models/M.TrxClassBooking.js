@@ -64,7 +64,7 @@ async function create(bookingData) {
   if (checkExisting.recordset.length > 0) {
     return {
       success: false,
-      message: 'Anda harus menyelesaikan booking sebelumnya sebelum membuat booking baru.'
+      message: 'Please complete your previous booking before creating a new one.',
     };
   }
 
@@ -96,7 +96,7 @@ async function create(bookingData) {
       )
     `);
 
-  return { success: true, message: 'Booking berhasil dibuat.' };
+  return { success: true, message: 'Booking created successfully.' };
 }
 
 //NO VALIDATED
