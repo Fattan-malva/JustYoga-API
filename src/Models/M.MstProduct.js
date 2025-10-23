@@ -19,5 +19,24 @@ async function findPlanProductByCustomerID(customerID) {
 
   return result.recordset;
 }
+async function findJustMeHistoryByCustomerID(customerID) {
+  const pool = await getPool();
 
-module.exports = { findPlanProductByCustomerID };
+  const result = await pool.request()
+    .input('customerID', sql.VarChar, customerID)
+    .query(`
+      SELECT 
+        mp.productName, 
+        tj.startDate, 
+        tj.endDate,
+        tj.remainSession
+      FROM TrxJustMe tj
+      INNER JOIN MstProduct mp ON tj.productID = mp.productID
+      WHERE tj.customerID = @customerID
+      ORDER BY tj.startDate ASC
+    `);
+
+  return result.recordset;
+}
+
+module.exports = { findPlanProductByCustomerID, findJustMeHistoryByCustomerID };
