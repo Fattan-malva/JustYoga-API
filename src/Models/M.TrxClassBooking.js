@@ -48,6 +48,53 @@ async function findByUniqCode(uniqCode) {
   return result.recordset;
 }
 
+async function findByCustomerID(customerID) {
+  if (!customerID) {
+    throw new Error('customerID is required.');
+  }
+
+  const pool = await getPool();
+
+  const result = await pool.request()
+    .input('customerID', sql.VarChar(255), customerID)
+    .query(`
+      SELECT
+        mct.name,
+        tcb.ContractID,
+        tcb.AccessCardNumber,
+        ms.name AS StudioName,
+        mr.RoomName,
+        mc.ClassName,
+        tcb.ClassBookingTime,
+        mts.ETime AS TimeClsEnd,
+        tcb.ClassMapNumber,
+        tcb.isActive,
+        tcb.isConfirm,
+        tcb.isRelease
+      FROM TrxClassBooking AS tcb
+      LEFT JOIN MstTimeSchedule AS mts
+        ON mts.studioID = tcb.StudioID
+        AND tcb.ClassBookingDate BETWEEN mts.SDate AND mts.EDate
+        AND mts.stime = tcb.ClassBookingTime
+      INNER JOIN MstStudio AS ms
+        ON ms.studioID = tcb.studioID
+      INNER JOIN MstRoomType AS mr
+        ON mr.RoomType = tcb.RoomType
+      INNER JOIN MstClass AS mc
+        ON mc.ClassID = tcb.ClassID
+      INNER JOIN MstCustomer AS mct
+        ON mct.customerID = tcb.customerID
+      WHERE tcb.customerID = @customerID
+      ORDER BY
+        tcb.ClassBookingDate DESC,
+        tcb.ClassBookingTime DESC;
+    `);
+
+  return result.recordset;
+}
+
+
+
 async function create(bookingData) {
   const pool = await getPool();
 
@@ -136,4 +183,4 @@ async function create(bookingData) {
 //   return { success: true };
 // }
 
-module.exports = { findAll, findByUniqCode, create };
+module.exports = { findAll, findByUniqCode, findByCustomerID, create };

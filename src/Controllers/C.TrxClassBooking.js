@@ -25,6 +25,26 @@ async function findByUniqCode(req, res) {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+async function findByCustomerID(req, res) {
+    try {
+        const { customerID } = req.query;
+
+        if (!customerID) {
+            return res.status(400).json({ message: "customerID is required" });
+        }
+
+        const data = await BookingModel.findByCustomerID(customerID);
+
+        if (data.length === 0) {
+            return res.status(404).json({ message: "No booking found for this customerID" });
+        }
+
+        res.json(data);
+    } catch (error) {
+        console.error("Error fetching booking by customerID:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 async function create(req, res) {
     try {
@@ -61,4 +81,4 @@ async function create(req, res) {
 }
 
 
-module.exports = { index, findByUniqCode, create };
+module.exports = { index, findByUniqCode, findByCustomerID, create };
