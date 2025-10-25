@@ -1,5 +1,28 @@
 const { getPool, sql } = require('../Config/db');
 
+async function findActivePlanByLastContractID(lastContractID) {
+  const pool = await getPool();
+
+  const result = await pool.request()
+    .input('lastContractID', sql.VarChar(255), lastContractID)
+    .query(`
+      SELECT
+        mcl.name, 
+        mp.productName,
+        tc.status,
+        tc.productID, 
+        tc.contractID, 
+        tc.startDate, 
+        tc.endDate
+      FROM TrxContract tc
+      INNER JOIN MstProduct mp on tc.productID = mp.productID
+      INNER JOIN MstCustomerLogin mcl on tc.contractID = mcl.lastContractID
+      where mcl.lastContractID = @lastContractID 
+    `);
+
+  return result.recordset;
+}
+
 async function findPlanProductByCustomerID(customerID) {
   const pool = await getPool();
 
@@ -19,6 +42,7 @@ async function findPlanProductByCustomerID(customerID) {
 
   return result.recordset;
 }
+
 async function findJustMeHistoryByCustomerID(customerID) {
   const pool = await getPool();
 
@@ -39,4 +63,4 @@ async function findJustMeHistoryByCustomerID(customerID) {
   return result.recordset;
 }
 
-module.exports = { findPlanProductByCustomerID, findJustMeHistoryByCustomerID };
+module.exports = { findPlanProductByCustomerID, findJustMeHistoryByCustomerID, findActivePlanByLastContractID };
