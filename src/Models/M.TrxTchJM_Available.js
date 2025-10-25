@@ -21,6 +21,7 @@ async function findAll() {
         ON a.TchID = e.EmployeeID
     INNER JOIN MstStudio AS s
         ON a.toStudioID = s.StudioID
+    WHERE a.isBook = 'false'
     ORDER BY a.Sequence ASC;
   `;
 
@@ -49,7 +50,7 @@ async function findByDate(date) {
         ON a.TchID = e.EmployeeID
     INNER JOIN MstStudio AS s
         ON a.toStudioID = s.StudioID
-    WHERE a.TrxDate = @date
+    WHERE a.TrxDate = @date AND a.isBook = 'false'
     ORDER BY a.Sequence ASC;
   `;
 
@@ -78,7 +79,7 @@ async function findByDateAndStudio(date, studioID) {
         ON a.TchID = e.EmployeeID
     INNER JOIN MstStudio AS s
         ON a.toStudioID = s.StudioID
-    WHERE a.TrxDate = @date AND a.toStudioID = @studioID
+    WHERE a.TrxDate = @date AND a.toStudioID = @studioID AND a.isBook = 'false'
     ORDER BY a.Sequence ASC;
   `;
 
