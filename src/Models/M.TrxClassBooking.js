@@ -51,9 +51,12 @@ async function findByUniqCode(uniqCode) {
 async function create(bookingData) {
   const pool = await getPool();
 
+  // Ensure customerID is a string
+  bookingData.customerID = String(bookingData.customerID);
+
   // 🔍 1. Cek apakah user punya booking yang belum dirilis
   const checkExisting = await pool.request()
-    .input('customerID', sql.VarChar, bookingData.customerID)
+    .input('customerID', sql.VarChar(255), bookingData.customerID)
     .query(`
       SELECT TOP 1 *
       FROM TrxClassBooking
@@ -75,7 +78,7 @@ async function create(bookingData) {
     .input('ClassID', sql.Int, bookingData.ClassID)
     .input('ClassBookingDate', sql.DateTime, new Date(bookingData.ClassBookingDate))
     .input('ClassBookingTime', sql.VarChar, bookingData.ClassBookingTime)
-    .input('customerID', sql.VarChar, bookingData.customerID)
+    .input('customerID', sql.VarChar(255), bookingData.customerID)
     .input('ContractID', sql.VarChar, bookingData.ContractID)
     .input('AccessCardNumber', sql.Int, bookingData.AccessCardNumber)
     .input('isActive', sql.Bit, bookingData.isActive)

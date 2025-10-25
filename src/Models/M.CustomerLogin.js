@@ -3,7 +3,7 @@ const { getPool, sql } = require('../Config/db');
 async function findById(customerID) {
   const pool = await getPool();
   const result = await pool.request()
-    .input('customerID', sql.Int, customerID)
+    .input('customerID', sql.VarChar(255), customerID)
     .query(`SELECT TOP (1000) [customerID]
       ,[name]
       ,[email]

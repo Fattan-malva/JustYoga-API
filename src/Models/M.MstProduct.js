@@ -4,11 +4,11 @@ async function findPlanProductByCustomerID(customerID) {
   const pool = await getPool();
 
   const result = await pool.request()
-    .input('customerID', sql.VarChar, customerID)
+    .input('customerID', sql.VarChar(255), customerID)
     .query(`
-      SELECT 
-        mp.productName, 
-        tc.startDate, 
+      SELECT
+        mp.productName,
+        tc.startDate,
         tc.endDate,
         tc.trxDate
       FROM TrxContract tc
@@ -23,11 +23,11 @@ async function findJustMeHistoryByCustomerID(customerID) {
   const pool = await getPool();
 
   const result = await pool.request()
-    .input('customerID', sql.VarChar, customerID)
+    .input('customerID', sql.VarChar(255), customerID)
     .query(`
-      SELECT 
-        mp.productName, 
-        tj.startDate, 
+      SELECT
+        mp.productName,
+        tj.startDate,
         tj.endDate,
         tj.remainSession
       FROM TrxJustMe tj
